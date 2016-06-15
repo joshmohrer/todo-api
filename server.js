@@ -16,12 +16,15 @@ app.get('/', function (req, res) {
 
 app.get('/todos', function(req, res){
 	res.json(todos);
+		console.log(todos);
+
 });
 
 app.get('/todos/:id', function(req,res){
 	var todoID = parseInt(req.params.id, 10);
 	var matchedTodo = _.findWhere(todos, {id: todoID});
 
+	console.log(matchedTodo);
 	if(matchedTodo){
 		res.json(matchedTodo)
 	} else {
@@ -44,6 +47,21 @@ app.post('/todos', function(req,res){
 	res.json(newBody);
 	}
 });
+
+
+app.delete('/todos/:id', function (req, res){
+	
+	var todoID = parseInt(req.params.id, 10);
+	var matchedTodo = _.findWhere(todos, {id: todoID});
+
+	if (!matchedTodo){
+		res.status(404).json({"error": "no todo found with that ID"});
+	} else {
+		todos = _.without(todos, matchedTodo);
+		res.json(matchedTodo);
+	}
+});
+
 
 
 
